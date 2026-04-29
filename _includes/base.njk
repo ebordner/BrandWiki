@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if title and title != "Brand Wiki" %}{{ title }} — {% endif %}Revenue by Design Brand Wiki</title>
+  <link rel="stylesheet" href="/css/wiki.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a href="/" class="brand-name">Revenue by Design</a>
+  <span class="divider">|</span>
+  <span class="tagline">Brand Wiki &mdash; Profit is a design decision.</span>
+</header>
+
+<div class="layout">
+
+  <nav class="sidebar" aria-label="Wiki navigation">
+    <a href="/" class="sidebar-home">&#8962; All Articles</a>
+
+    {% set categories = [
+      { id: "identity",   label: "Identity" },
+      { id: "audience",   label: "Audience" },
+      { id: "offers",     label: "Offers" },
+      { id: "voice",      label: "Voice" },
+      { id: "proof",      label: "Proof" },
+      { id: "market",     label: "Market" },
+      { id: "strategy",   label: "Strategy" },
+      { id: "frameworks", label: "Frameworks" }
+    ] %}
+
+    {% for cat in categories %}
+    <div class="sidebar-group">
+      <span class="sidebar-group-label">{{ cat.label }}</span>
+      <ul>
+        {% for item in collections.wiki %}
+          {% if item.data.category == cat.id %}
+          <li>
+            <a href="{{ item.url }}"{% if page.url == item.url %} class="active" aria-current="page"{% endif %}>
+              {{ item.data.title }}
+            </a>
+          </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+    {% endfor %}
+  </nav>
+
+  <main class="main-content">
+    {{ content | safe }}
+  </main>
+
+</div>
+</body>
+</html>

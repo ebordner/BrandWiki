@@ -1,0 +1,53 @@
+---
+layout: base.njk
+---
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <a href="/">Home</a>
+  <span class="sep">&rsaquo;</span>
+  <a href="/#{{ category }}">{{ category | capitalize }}</a>
+  <span class="sep">&rsaquo;</span>
+  {{ title }}
+</nav>
+
+<h1 class="article-title">{{ title }}</h1>
+
+<div class="infobox" role="complementary" aria-label="Article information">
+  <div class="infobox-title">Article Info</div>
+  <div class="infobox-body">
+    <div class="infobox-row">
+      <span class="infobox-label">Category</span>
+      <span>{{ category | capitalize }}</span>
+    </div>
+    <div class="infobox-row">
+      <span class="infobox-label">Confidence</span>
+      <span class="badge {{ confidence | confidenceClass }}">{{ confidence }}</span>
+    </div>
+    <div class="infobox-row">
+      <span class="infobox-label">Sources</span>
+      <span>{{ sources | sourceCount }}</span>
+    </div>
+    {% if last_updated %}
+    <div class="infobox-row">
+      <span class="infobox-label">Updated</span>
+      <span>{{ last_updated | dateFormat }}</span>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="article-content">
+  {{ content | safe }}
+</div>
+
+{% set seeAlso = collections.wiki | relatedArticles(category, page.url) %}
+{% if seeAlso.length > 0 %}
+<div class="see-also">
+  <h2>See also</h2>
+  <ul>
+    {% for item in seeAlso %}
+    <li><a href="{{ item.url }}">{{ item.data.title }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}

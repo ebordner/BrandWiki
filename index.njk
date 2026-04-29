@@ -1,0 +1,49 @@
+---
+layout: base.njk
+title: Brand Wiki
+permalink: /
+---
+
+<h1 class="home-title">Revenue by Design &mdash; Brand Wiki</h1>
+<p class="home-intro">
+  A living brand intelligence system for Revenue by Design.
+  {{ collections.wiki.length }} articles across 8 categories.
+</p>
+
+{% set categoryMeta = {
+  "identity":   "Who Revenue by Design is",
+  "audience":   "Who it serves",
+  "offers":     "What it sells",
+  "voice":      "How it sounds",
+  "proof":      "Evidence and results",
+  "market":     "Competitive landscape",
+  "strategy":   "Content and growth strategy",
+  "frameworks": "Proprietary methods and IP"
+} %}
+
+{% set grouped = collections.wiki | groupByCategory %}
+
+{% for category, articles in grouped %}
+<section class="category-section" id="{{ category }}">
+  <div class="category-section-header">
+    <h2>{{ category | capitalize }}</h2>
+    <span class="category-description">{{ categoryMeta[category] }}</span>
+  </div>
+  <div class="article-grid">
+    {% for article in articles %}
+    <div class="article-card">
+      <h3><a href="{{ article.url }}">{{ article.data.title }}</a></h3>
+      <div class="card-meta">
+        <span class="badge {{ article.data.confidence | confidenceClass }}">
+          {{ article.data.confidence }}
+        </span>
+        <span>{{ article.data.sources | sourceCount }} source{% if article.data.sources | sourceCount != 1 %}s{% endif %}</span>
+        {% if article.data.last_updated %}
+        <span>&middot; {{ article.data.last_updated | dateFormat }}</span>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endfor %}
